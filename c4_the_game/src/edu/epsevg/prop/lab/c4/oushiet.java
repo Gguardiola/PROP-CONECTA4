@@ -11,7 +11,7 @@ public class oushiet
   private String nom;
   private int torn=1;
   private int cont=0;
-  int profmax=5;
+  int profmax=8;
     public oushiet(int profmax1)
   {
     profmax=profmax1;
@@ -23,7 +23,8 @@ public class oushiet
   {
     torn=color;
     int col=minimax(t,profmax);
-      System.out.println("cont: "+cont);
+    System.out.println("cont: "+cont);
+    cont=0;
     return col;
     
   }
@@ -33,6 +34,13 @@ public class oushiet
   {
     return nom;
   }
+  /**
+   * Retorna la columna con mejor heuristica en base del algoritmo minimax y la
+  *         heuristica.
+   * @param taulell taulell amb la partida concreta
+   * @param profunditat profunditat maxima de l'arbre
+   * @return columna amb millor heuristica
+   */
    public int minimax(Tauler taulell, int profunditat){
         int val=Integer.MIN_VALUE;  
         int columna=4;
@@ -59,7 +67,15 @@ public class oushiet
        
        return columna;
    }
- 
+ /**
+  * Retorna el valor que te menor heuristica amb el seu moviment.   
+  * @param taulell taulell amb la partida concreta
+  * @param alfa nombre alfa per la poda alfa-beta
+  * @param beta nombre beta per la poda alfa-beta
+  * @param antMov moviment anterior (num de columna)
+  * @param profunditat profunditat maxima de l'arbre
+  * @return  valor amb l'heuristica major
+  */
    public int cridaMin(Tauler taulell,int alfa,int beta, int antMov,int profunditat){
        //Primer de tot comprobem que l'ultima jugada sigui la guanyadora , si es aquest el cas
        //llavors retornem una heuristica infinita jej
@@ -94,14 +110,23 @@ public class oushiet
                 per mirar si fem la poda alfabeta
                 */
                 int auxVal=cridaMax(noutaulell,alfa,beta, i,profunditat-1);
-                val=Math.min(val,auxVal);
-                beta=Math.min(val,beta);
+                val=Math.min(val, auxVal);
+                beta=Math.min(val, beta);
                 //si alfa es major a beta llavors podem i ens petem tot lo altre
                 if(alfa>=beta)break;
              }
         }
         return val;
         }
+   /**
+    * Retorna el valor que te major heuristica amb el seu moviment.  
+    * @param taulell taulell amb la partida concreta
+    * @param alfa nombre alfa per la poda alfa-beta
+    * @param beta nombre beta per la poda alfa-beta
+    * @param antMov moviment anterior(numero de columna)
+    * @param profunditat profunditat maxima de l'arbre
+    * @return valor amb l'heuristica major
+    */
    public int cridaMax(Tauler taulell,int alfa,int beta, int antMov,int profunditat){
        //Primer de tot comprobem que l'ultima jugada sigui la guanyadora , si es aquest el cas
        //llavors retornem una heuristica infinita jej
@@ -145,7 +170,11 @@ public class oushiet
         }
         return val;
         }
-
+    /**
+     * 
+     * @param t  taulell amb la partida concreta
+     * @return nombre anomenat heuristica depenent de les fitxes i les combinaciions del taulell
+     */
     public int Heuristica(Tauler t){
         ++cont;
         //Sumem totes les heuristiques posibles de les posibles combinacions 
@@ -155,7 +184,11 @@ public class oushiet
 
   
   }
-    
+    /**
+     * 
+     * @param t taulell amb la partida concreta
+     * @return heuristica de totes les fitxes mirades en horitzontals
+     */
     public int HeurChorizontales(Tauler t){
         int heur=0;
         for (int i = 0; i < t.getMida()-3; i++) {
@@ -178,7 +211,12 @@ public class oushiet
         }  
       return heur;
   }
- 
+    
+    /**
+     * 
+     * @param t taulell amb la partida concreta
+     * @return heuristica de totes les fitxes mirades en vertical
+     */
     public int HeurBertuscales(Tauler t){
         //lo mismo pa vertiacles l
         int heur=0;
@@ -200,7 +238,11 @@ public class oushiet
         }  
       return heur;
         }
-    
+    /**
+     * 
+     * @param t taulell amb la partida concreta
+     * @return heuristica de totes les fitxes mirades en diagonal
+     */
     public int HeurDeIzqaDerDiagonal(Tauler t){
         //ahora para lineas de . a l
         int heur=0;
@@ -222,6 +264,11 @@ public class oushiet
         }  
       return heur;
         }
+    /**
+     * 
+     * @param t taulell amb la partida concreta
+     * @return heuristica de totes les fitxes mirades en l'altre diagonal
+     */
     public int HeurDeDeraIzqDiagonal(Tauler t){
         //ahora de l a .
         int heur=0;
